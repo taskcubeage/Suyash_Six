@@ -1,0 +1,23 @@
+name: Sync Team Development to Company Development
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Team Repository
+        uses: actions/checkout@v4
+
+      - name: Push to Company Repository
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          git remote add company https://x-access-token:${{ secrets.COMPANY_PAT }}@github.com/suyash7172/Suyash_Six.git
+
+          git push company development
