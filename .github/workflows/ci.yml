@@ -1,0 +1,30 @@
+name: Team Continuous Integration
+
+on:
+  push:
+    branches:
+      - "dev-*"
+
+permissions:
+  contents: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Merge Developer Branch into Development
+        run: |
+          git checkout development
+          git merge ${{ github.ref_name }} --no-edit
+          git push origin development
